@@ -234,17 +234,6 @@
     ]]>
     </change-notes>
 
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="123"/>
-
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products  -->
-    <depends>com.intellij.modules.lang</depends>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-    </extensions>
 
     <application-components>
         <!-- Add your application components here -->
@@ -252,10 +241,6 @@
             <implementation-class>com.wakatime.intellij.plugin.WakaTime</implementation-class>
         </component>
     </application-components>
-
-    <project-components>
-        <!-- Add your project components here -->
-    </project-components>
 
     <actions>
         <!-- Add your actions here -->

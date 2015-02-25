@@ -8,26 +8,34 @@ Website:     https://wakatime.com/
 
 package com.wakatime.intellij.plugin;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.apache.log4j.Level;
+import org.jetbrains.annotations.NotNull;
 import com.intellij.AppTopics;
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ApplicationNamesInfo;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.util.PlatformUtils;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import org.apache.log4j.Level;
 
 public class WakaTime implements ApplicationComponent {
 
@@ -53,7 +61,7 @@ public class WakaTime implements ApplicationComponent {
         //System.out.println("Initializing WakaTime plugin v" + VERSION + " (https://wakatime.com/)");
 
         // Set runtime constants
-        IDE_NAME = PlatformUtils.getPlatformPrefix();
+        IDE_NAME = ApplicationNamesInfo.getInstance().getProductName();
         IDE_VERSION = ApplicationInfo.getInstance().getFullVersion();
 
         ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
@@ -207,15 +215,7 @@ public class WakaTime implements ApplicationComponent {
     public static String getProjectName() {
         DataContext dataContext = DataManager.getInstance().getDataContext();
         if (dataContext != null) {
-            Project project = null;
-
-            try {
-                project = PlatformDataKeys.PROJECT.getData(dataContext);
-            } catch (NoClassDefFoundError e) {
-                try {
-                    project = DataKeys.PROJECT.getData(dataContext);
-                } catch (NoClassDefFoundError ex) { }
-            }
+            Project project = PlatformDataKeys.PROJECT.getData(dataContext);
             if (project != null) {
                 return project.getName();
             }

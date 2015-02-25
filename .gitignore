@@ -10,3 +10,6 @@
 .idea/
 .metadata
 bin/
+/.consulo/workspace.xml
+/.consulo/sandbox
+/out
