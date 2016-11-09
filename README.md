@@ -1,4 +1,4 @@
-jetbrains-wakatime
+consulo-wakatime
 ==================
 
 Fully automatic time tracking for JetBrains IDEs (IntelliJ IDEA, PyCharm, RubyMine, PhpStorm, AppCode, WebStorm).
