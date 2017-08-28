@@ -90,10 +90,6 @@ public class WakaTime implements ApplicationComponent {
         if (Dependencies.isPythonInstalled()) {
 
             WakaTime.DEBUG = WakaTime.isDebugEnabled();
-            if (WakaTime.DEBUG) {
-                log.setLevel(Level.DEBUG);
-                log.debug("Logging level set to DEBUG");
-            }
 
             log.debug("Python location: " + Dependencies.getPythonLocation());
             log.debug("CLI location: " + Dependencies.getCLILocation());
