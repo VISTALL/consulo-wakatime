@@ -211,7 +211,7 @@ public class WakaTime implements ApplicationComponent {
     public static String getProjectName() {
         DataContext dataContext = DataManager.getInstance().getDataContext();
         if (dataContext != null) {
-            Project project = PlatformDataKeys.PROJECT.getData(dataContext);
+            Project project = dataContext.getData(PlatformDataKeys.PROJECT);
             if (project != null) {
                 return project.getName();
             }
