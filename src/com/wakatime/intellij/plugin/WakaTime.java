@@ -8,6 +8,20 @@ Website:     https://wakatime.com/
 
 package com.wakatime.intellij.plugin;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.AppTopics;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -23,25 +37,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.PlatformUtils;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-
-import org.apache.log4j.Level;
 
 public class WakaTime implements ApplicationComponent {
 
@@ -72,7 +69,7 @@ public class WakaTime implements ApplicationComponent {
         //System.out.println("Initializing WakaTime plugin v" + VERSION + " (https://wakatime.com/)");
 
         // Set runtime constants
-        IDE_NAME = PlatformUtils.getPlatformPrefix();
+        IDE_NAME = "Consulo";
         IDE_VERSION = ApplicationInfo.getInstance().getFullVersion();
 
         setupDebugging();
@@ -423,7 +420,7 @@ public class WakaTime implements ApplicationComponent {
             return false;
         }
         String filePath = file.getPath();
-        if (filePath.equals("atlassian-ide-plugin.xml") || filePath.contains("/.idea/workspace.xml")) {
+        if (filePath.equals("atlassian-ide-plugin.xml") || filePath.contains("/.consulo/workspace.xml")) {
             return false;
         }
         return true;
@@ -436,10 +433,10 @@ public class WakaTime implements ApplicationComponent {
 
     public static void setLoggingLevel() {
         if (WakaTime.DEBUG) {
-            log.setLevel(Level.DEBUG);
+            //log.setLevel(Level.DEBUG);
             log.debug("Logging level set to DEBUG");
         } else {
-            log.setLevel(Level.INFO);
+            //log.setLevel(Level.INFO);
         }
     }
 

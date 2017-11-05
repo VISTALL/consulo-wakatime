@@ -11,3 +11,6 @@
 .metadata
 bin/
 out/
+
+.consulo/workspace.xml
+.consulo/sandbox/
