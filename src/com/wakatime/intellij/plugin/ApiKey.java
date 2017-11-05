@@ -14,13 +14,12 @@ import com.intellij.openapi.ui.ValidationInfo;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.io.*;
 import java.util.UUID;
 
 public class ApiKey extends DialogWrapper {
     private final JPanel panel;
     private final JTextField input;
-    public static String _api_key = "";
+    private static String _api_key = "";
 
     public ApiKey(@Nullable Project project) {
         super(project, true);
@@ -63,91 +62,19 @@ public class ApiKey extends DialogWrapper {
     }
 
     public static String getApiKey() {
-        if (ApiKey._api_key != "") {
+        if (!ApiKey._api_key.equals("")) {
             return ApiKey._api_key;
         }
-        String apiKey = "";
-        File userHome = new File(System.getProperty("user.home"));
-        File configFile = new File(userHome, WakaTime.CONFIG);
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(configFile.getAbsolutePath()));
-        } catch (FileNotFoundException e1) {}
-        if (br != null) {
-            try {
-                String line = br.readLine();
-                while (line != null) {
-                    String[] parts = line.split("=");
-                    if (parts.length == 2 && parts[0].trim().equals("api_key")) {
-                        apiKey = parts[1].trim();
-                    }
-                    line = br.readLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+
+        String apiKey = ConfigFile.get("settings", "api_key");
+        if (apiKey == null) apiKey = "";
+
         ApiKey._api_key = apiKey;
         return apiKey;
     }
 
-    private static void setApiKey(String apiKey) {
-        File userHome = new File(System.getProperty("user.home"));
-        File configFile = new File(userHome, WakaTime.CONFIG);
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-        boolean found = false;
-        try {
-            br = new BufferedReader(new FileReader(configFile.getAbsolutePath()));
-        } catch (FileNotFoundException e1) {
-        }
-        if (br != null) {
-            try {
-                String line = br.readLine();
-                while (line != null) {
-                    String[] parts = line.split("=");
-                    if (parts.length == 2 && parts[0].trim().equals("api_key")) {
-                        found = true;
-                        sb.append("api_key = " + apiKey + "\n");
-                    } else {
-                        sb.append(line + "\n");
-                    }
-                    line = br.readLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if (!found) {
-            sb = new StringBuilder();
-            sb.append("[settings]\n");
-            sb.append("api_key = " + apiKey + "\n");
-            sb.append("debug = false\n");
-        }
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter(configFile.getAbsolutePath(), "UTF-8");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        if (writer != null) {
-            writer.print(sb.toString());
-            writer.close();
-        }
+    public static void setApiKey(String apiKey) {
+        ConfigFile.set("settings", "api_key", apiKey);
         ApiKey._api_key = apiKey;
     }
 
